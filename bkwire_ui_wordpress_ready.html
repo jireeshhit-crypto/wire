@@ -723,7 +723,84 @@
                 </div>
             </div>
 
-            <div class="bkwire-filter-section">
+            <!-- Chapter Type Filter (Corporate only) -->
+            <div class="bkwire-filter-section" id="bkwireChapterTypeSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Chapter Type
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-checkbox-group">
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter7" value="7">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter7">Chapter 7</label>
+                    </div>
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter11" value="11">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter11">Chapter 11</label>
+                    </div>
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter13" value="13">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter13">Chapter 13</label>
+                    </div>
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter12" value="12">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter12">Chapter 12</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asset Range Filter (Corporate only) -->
+            <div class="bkwire-filter-section" id="bkwireAssetRangeSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Asset Range
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-amount-range">
+                    <span>0 - 50B ($)</span>
+                </div>
+                <div class="bkwire-slider-track" id="bkwireAssetSlider">
+                    <div class="bkwire-slider-range"></div>
+                    <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                    <div class="bkwire-slider-thumb bkwire-right" data-value="50000000000"></div>
+                </div>
+                <div class="bkwire-slider-labels">
+                    <span>0</span>
+                    <span>1M</span>
+                    <span>10M</span>
+                    <span>100M</span>
+                    <span>1B</span>
+                    <span>10B</span>
+                    <span>50B</span>
+                </div>
+            </div>
+
+            <!-- Liability Range Filter (Corporate only) -->
+            <div class="bkwire-filter-section" id="bkwireLiabilityRangeSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Liability Range
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-amount-range">
+                    <span>0 - 50B ($)</span>
+                </div>
+                <div class="bkwire-slider-track" id="bkwireLiabilitySlider">
+                    <div class="bkwire-slider-range"></div>
+                    <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                    <div class="bkwire-slider-thumb bkwire-right" data-value="50000000000"></div>
+                </div>
+                <div class="bkwire-slider-labels">
+                    <span>0</span>
+                    <span>1M</span>
+                    <span>10M</span>
+                    <span>100M</span>
+                    <span>1B</span>
+                    <span>10B</span>
+                    <span>50B</span>
+                </div>
+            </div>
+
+            <!-- Loss Amount Filter (Impacted only) -->
+            <div class="bkwire-filter-section" id="bkwireLossAmountSection" style="display: none;">
                 <div class="bkwire-filter-title">
                     Loss amount
                     <span class="bkwire-collapse-icon">^</span>
@@ -746,7 +823,8 @@
                 </div>
             </div>
 
-            <div class="bkwire-filter-section">
+            <!-- Location Filter (All tabs) -->
+            <div class="bkwire-filter-section" id="bkwireLocationSection">
                 <div class="bkwire-filter-title">
                     Location
                     <span class="bkwire-collapse-icon">^</span>
@@ -1005,6 +1083,155 @@
         const bkwireStateFilter = document.getElementById('bkwireStateFilter');
         const bkwireCityFilter = document.getElementById('bkwireCityFilter');
 
+        // Helper function to update filter visibility based on tab
+        function bkwireUpdateFilterVisibility(tabName) {
+            const chapterTypeSection = document.getElementById('bkwireChapterTypeSection');
+            const assetRangeSection = document.getElementById('bkwireAssetRangeSection');
+            const liabilityRangeSection = document.getElementById('bkwireLiabilityRangeSection');
+            const lossAmountSection = document.getElementById('bkwireLossAmountSection');
+            const locationSection = document.getElementById('bkwireLocationSection');
+            
+            // Hide all sections first
+            chapterTypeSection.style.display = 'none';
+            assetRangeSection.style.display = 'none';
+            liabilityRangeSection.style.display = 'none';
+            lossAmountSection.style.display = 'none';
+            
+            // Show sections based on tab
+            if (tabName === 'corporate') {
+                chapterTypeSection.style.display = 'block';
+                assetRangeSection.style.display = 'block';
+                liabilityRangeSection.style.display = 'block';
+            } else if (tabName === 'impacted') {
+                lossAmountSection.style.display = 'block';
+            }
+            // Location section is always visible
+        }
+        
+        // Helper function to get selected chapter types
+        function bkwireGetSelectedChapterTypes() {
+            const selectedChapters = [];
+            document.querySelectorAll('.bkwire-checkbox:checked').forEach(checkbox => {
+                selectedChapters.push(parseInt(checkbox.value));
+            });
+            return selectedChapters;
+        }
+        
+        // Helper function to get asset range from slider
+        function bkwireGetAssetRange() {
+            const slider = document.getElementById('bkwireAssetSlider');
+            if (!slider) return { min: 0, max: 50000000000 };
+            
+            const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+            const min = parseInt(thumbs[0].getAttribute('data-value'));
+            const max = parseInt(thumbs[1].getAttribute('data-value'));
+            return { min: Math.min(min, max), max: Math.max(min, max) };
+        }
+        
+        // Helper function to get liability range from slider
+        function bkwireGetLiabilityRange() {
+            const slider = document.getElementById('bkwireLiabilitySlider');
+            if (!slider) return { min: 0, max: 50000000000 };
+            
+            const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+            const min = parseInt(thumbs[0].getAttribute('data-value'));
+            const max = parseInt(thumbs[1].getAttribute('data-value'));
+            return { min: Math.min(min, max), max: Math.max(min, max) };
+        }
+        
+        // Helper function to parse asset/liability values
+        function bkwireParseAssetValue(value) {
+            if (!value) return 0;
+            
+            const str = value.toString();
+            if (str.includes('B')) {
+                return parseFloat(str.replace('B', '')) * 1000000000;
+            } else if (str.includes('M')) {
+                return parseFloat(str.replace('M', '')) * 1000000;
+            } else if (str.includes('K')) {
+                return parseFloat(str.replace('K', '')) * 1000;
+            } else {
+                return parseFloat(str) || 0;
+            }
+        }
+        
+        // Helper function to setup sliders
+        function bkwireSetupSliders() {
+            bkwireSetupSlider('bkwireAssetSlider');
+            bkwireSetupSlider('bkwireLiabilitySlider');
+        }
+        
+        // Helper function to setup individual slider
+        function bkwireSetupSlider(sliderId) {
+            const slider = document.getElementById(sliderId);
+            if (!slider) return;
+            
+            const track = slider.querySelector('.bkwire-slider-track');
+            const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+            const range = slider.querySelector('.bkwire-slider-range');
+            
+            let isDragging = false;
+            let currentThumb = null;
+            
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    currentThumb = thumb;
+                    e.preventDefault();
+                });
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || !currentThumb) return;
+                
+                const rect = track.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                
+                currentThumb.style.left = percentage + '%';
+                currentThumb.setAttribute('data-value', Math.round(percentage * 50000000000 / 100));
+                
+                bkwireUpdateSliderRange(slider);
+                bkwireApplyFilters();
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                currentThumb = null;
+            });
+        }
+        
+        // Helper function to update slider range display
+        function bkwireUpdateSliderRange(slider) {
+            const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+            const range = slider.querySelector('.bkwire-slider-range');
+            
+            const leftPos = parseFloat(thumbs[0].style.left) || 0;
+            const rightPos = parseFloat(thumbs[1].style.left) || 100;
+            
+            const minPos = Math.min(leftPos, rightPos);
+            const maxPos = Math.max(leftPos, rightPos);
+            
+            range.style.left = minPos + '%';
+            range.style.width = (maxPos - minPos) + '%';
+        }
+        
+        // Helper function to reset sliders
+        function bkwireResetSliders() {
+            const sliders = ['bkwireAssetSlider', 'bkwireLiabilitySlider'];
+            sliders.forEach(sliderId => {
+                const slider = document.getElementById(sliderId);
+                if (slider) {
+                    const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+                    thumbs[0].style.left = '0%';
+                    thumbs[1].style.left = '100%';
+                    thumbs[0].setAttribute('data-value', '0');
+                    thumbs[1].setAttribute('data-value', '50000000000');
+                    bkwireUpdateSliderRange(slider);
+                }
+            });
+        }
+
         // Initialize the app
         function bkwireInit() {
             bkwireRenderTable();
@@ -1024,6 +1251,14 @@
             bkwireSearchInput.addEventListener('input', bkwireApplyFilters);
             bkwireStateFilter.addEventListener('change', bkwireApplyFilters);
             bkwireCityFilter.addEventListener('change', bkwireApplyFilters);
+            
+            // Chapter type checkboxes
+            document.querySelectorAll('.bkwire-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', bkwireApplyFilters);
+            });
+            
+            // Asset and Liability sliders
+            bkwireSetupSliders();
         }
 
         // Switch between tabs
@@ -1054,9 +1289,8 @@
                 pageTitle.textContent = 'Creditor Matrix';
             }
 
-            // Show filters for all tabs
-            const sidebar = document.getElementById('bkwireLeftSidebar');
-            sidebar.style.display = 'block';
+            // Show/hide filter sections based on tab
+            bkwireUpdateFilterVisibility(tabName);
 
             bkwireApplyFilters();
         }
@@ -1073,10 +1307,41 @@
                 const matchesSearch = searchTerm === '' || config.searchFields.some(field => {
                     return (company[field] || '').toString().toLowerCase().includes(searchTerm);
                 });
-                // Filters for all tabs
+                
+                // Location filters for all tabs
                 const matchesState = stateValue === '' || company.State === stateValue;
                 const matchesCity = cityValue === '' || company.City === cityValue;
-                return matchesSearch && matchesState && matchesCity;
+                
+                // Chapter type filter (corporate only)
+                let matchesChapterType = true;
+                if (bkwireCurrentTab === 'corporate') {
+                    const selectedChapters = bkwireGetSelectedChapterTypes();
+                    if (selectedChapters.length > 0) {
+                        matchesChapterType = selectedChapters.includes(company['Chapter Type']);
+                    }
+                }
+                
+                // Asset range filter (corporate only)
+                let matchesAssetRange = true;
+                if (bkwireCurrentTab === 'corporate') {
+                    const assetRange = bkwireGetAssetRange();
+                    if (assetRange.min !== 0 || assetRange.max !== 50000000000) {
+                        const assetValue = bkwireParseAssetValue(company.Assets);
+                        matchesAssetRange = assetValue >= assetRange.min && assetValue <= assetRange.max;
+                    }
+                }
+                
+                // Liability range filter (corporate only)
+                let matchesLiabilityRange = true;
+                if (bkwireCurrentTab === 'corporate') {
+                    const liabilityRange = bkwireGetLiabilityRange();
+                    if (liabilityRange.min !== 0 || liabilityRange.max !== 50000000000) {
+                        const liabilityValue = bkwireParseAssetValue(company.Liabilities);
+                        matchesLiabilityRange = liabilityValue >= liabilityRange.min && liabilityValue <= liabilityRange.max;
+                    }
+                }
+                
+                return matchesSearch && matchesState && matchesCity && matchesChapterType && matchesAssetRange && matchesLiabilityRange;
             });
             bkwireRenderTable();
         }
@@ -1086,6 +1351,15 @@
             bkwireSearchInput.value = '';
             bkwireStateFilter.value = '';
             bkwireCityFilter.value = '';
+            
+            // Clear chapter type checkboxes
+            document.querySelectorAll('.bkwire-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            // Reset sliders
+            bkwireResetSliders();
+            
             bkwireFilteredData = [...bkwireCompaniesData];
             bkwireRenderTable();
         }
