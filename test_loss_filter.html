@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loss Amount Filter Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .filter-item { margin: 10px 0; }
+        .result { margin-top: 10px; padding: 10px; background: #f0f0f0; }
+        .slider-container { margin: 20px 0; }
+        .slider-track { 
+            position: relative; 
+            height: 4px; 
+            background: #dadce0; 
+            border-radius: 2px; 
+            margin: 10px 0; 
+            cursor: pointer; 
+        }
+        .slider-range { 
+            position: absolute; 
+            height: 100%; 
+            background: #1a73e8; 
+            border-radius: 2px; 
+            left: 0%; 
+            width: 100%; 
+        }
+        .slider-thumb { 
+            position: absolute; 
+            width: 16px; 
+            height: 16px; 
+            background: #1a73e8; 
+            border-radius: 50%; 
+            top: -6px; 
+            cursor: pointer; 
+            border: 2px solid white; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+        }
+        .slider-labels { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 11px; 
+            color: #5f6368; 
+            margin-top: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Loss Amount Filter Test</h1>
+    
+    <div class="test-section">
+        <h2>Loss Amount Range Test</h2>
+        <div class="filter-item">
+            <label>Loss Amount Range: <span id="lossRange">0 - 100B</span></label>
+        </div>
+        <div class="slider-container">
+            <div class="slider-track" id="lossSlider">
+                <div class="slider-range"></div>
+                <div class="slider-thumb" style="left: 0%" data-value="0"></div>
+                <div class="slider-thumb" style="left: 100%" data-value="100000000000"></div>
+            </div>
+            <div class="slider-labels">
+                <span>0</span>
+                <span>10K</span>
+                <span>100K</span>
+                <span>1M</span>
+                <span>10M</span>
+                <span>100M</span>
+                <span>1B</span>
+                <span>10B</span>
+                <span>100B</span>
+            </div>
+        </div>
+        <button onclick="testLossFilter()">Test Loss Filter</button>
+        <div id="lossResult" class="result"></div>
+    </div>
+
+    <script>
+        // Test data for impacted businesses
+        const testLossData = [
+            { "Impacted Business": "Company A", "Loss": 15571352 },
+            { "Impacted Business": "Company B", "Loss": 400210 },
+            { "Impacted Business": "Company C", "Loss": 33720289 },
+            { "Impacted Business": "Company D", "Loss": 22214 },
+            { "Impacted Business": "Company E", "Loss": 32320666 },
+            { "Impacted Business": "Company F", "Loss": 25136004 },
+            { "Impacted Business": "Company G", "Loss": 29360641 },
+            { "Impacted Business": "Company H", "Loss": 78747427 },
+            { "Impacted Business": "Company I", "Loss": 2581055 },
+            { "Impacted Business": "Company J", "Loss": 1819160 }
+        ];
+
+        // Setup slider functionality
+        function setupLossSlider() {
+            const slider = document.getElementById('lossSlider');
+            const track = slider.querySelector('.slider-track');
+            const thumbs = slider.querySelectorAll('.slider-thumb');
+            const range = slider.querySelector('.slider-range');
+            
+            let isDragging = false;
+            let currentThumb = null;
+            
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    currentThumb = thumb;
+                    e.preventDefault();
+                });
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || !currentThumb) return;
+                
+                const rect = track.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                
+                currentThumb.style.left = percentage + '%';
+                currentThumb.setAttribute('data-value', Math.round(percentage * 100000000000 / 100));
+                
+                updateSliderRange(slider);
+                updateLossRangeDisplay();
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                currentThumb = null;
+            });
+        }
+        
+        function updateSliderRange(slider) {
+            const thumbs = slider.querySelectorAll('.slider-thumb');
+            const range = slider.querySelector('.slider-range');
+            
+            const leftPos = parseFloat(thumbs[0].style.left) || 0;
+            const rightPos = parseFloat(thumbs[1].style.left) || 100;
+            
+            const minPos = Math.min(leftPos, rightPos);
+            const maxPos = Math.max(leftPos, rightPos);
+            
+            range.style.left = minPos + '%';
+            range.style.width = (maxPos - minPos) + '%';
+        }
+        
+        function updateLossRangeDisplay() {
+            const slider = document.getElementById('lossSlider');
+            const thumbs = slider.querySelectorAll('.slider-thumb');
+            const min = parseInt(thumbs[0].getAttribute('data-value'));
+            const max = parseInt(thumbs[1].getAttribute('data-value'));
+            
+            const minFormatted = formatCurrency(Math.min(min, max));
+            const maxFormatted = formatCurrency(Math.max(min, max));
+            
+            document.getElementById('lossRange').textContent = `${minFormatted} - ${maxFormatted}`;
+        }
+        
+        function formatCurrency(value) {
+            if (value >= 1000000000) {
+                return (value / 1000000000).toFixed(1) + 'B';
+            } else if (value >= 1000000) {
+                return (value / 1000000).toFixed(1) + 'M';
+            } else if (value >= 1000) {
+                return (value / 1000).toFixed(1) + 'K';
+            } else {
+                return value.toString();
+            }
+        }
+
+        function testLossFilter() {
+            const slider = document.getElementById('lossSlider');
+            const thumbs = slider.querySelectorAll('.slider-thumb');
+            const min = parseInt(thumbs[0].getAttribute('data-value'));
+            const max = parseInt(thumbs[1].getAttribute('data-value'));
+            
+            const actualMin = Math.min(min, max);
+            const actualMax = Math.max(min, max);
+            
+            const filtered = testLossData.filter(item => {
+                const lossValue = item.Loss || 0;
+                return lossValue >= actualMin && lossValue <= actualMax;
+            });
+            
+            document.getElementById('lossResult').innerHTML = 
+                `Loss range: ${formatCurrency(actualMin)} - ${formatCurrency(actualMax)}<br>
+                 Filtered results: ${filtered.length} items<br>
+                 ${filtered.map(item => `${item['Impacted Business']} ($${item.Loss.toLocaleString()})`).join('<br>')}`;
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupLossSlider();
+            updateLossRangeDisplay();
+        });
+    </script>
+</body>
+</html>

@@ -808,10 +808,10 @@
                 <div class="bkwire-amount-range">
                     <span>0 - 100B ($)</span>
                 </div>
-                <div class="bkwire-slider-track">
+                <div class="bkwire-slider-track" id="bkwireLossAmountSlider">
                     <div class="bkwire-slider-range"></div>
-                    <div class="bkwire-slider-thumb bkwire-left"></div>
-                    <div class="bkwire-slider-thumb bkwire-right"></div>
+                    <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                    <div class="bkwire-slider-thumb bkwire-right" data-value="100000000000"></div>
                 </div>
                 <div class="bkwire-slider-labels">
                     <span>0</span>
@@ -1139,6 +1139,17 @@
             return { min: Math.min(min, max), max: Math.max(min, max) };
         }
         
+        // Helper function to get loss amount range from slider
+        function bkwireGetLossAmountRange() {
+            const slider = document.getElementById('bkwireLossAmountSlider');
+            if (!slider) return { min: 0, max: 100000000000 };
+            
+            const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+            const min = parseInt(thumbs[0].getAttribute('data-value'));
+            const max = parseInt(thumbs[1].getAttribute('data-value'));
+            return { min: Math.min(min, max), max: Math.max(min, max) };
+        }
+        
         // Helper function to parse asset/liability values
         function bkwireParseAssetValue(value) {
             if (!value) return 0;
@@ -1159,6 +1170,7 @@
         function bkwireSetupSliders() {
             bkwireSetupSlider('bkwireAssetSlider');
             bkwireSetupSlider('bkwireLiabilitySlider');
+            bkwireSetupSlider('bkwireLossAmountSlider');
         }
         
         // Helper function to setup individual slider
@@ -1218,15 +1230,19 @@
         
         // Helper function to reset sliders
         function bkwireResetSliders() {
-            const sliders = ['bkwireAssetSlider', 'bkwireLiabilitySlider'];
-            sliders.forEach(sliderId => {
-                const slider = document.getElementById(sliderId);
+            const sliders = [
+                { id: 'bkwireAssetSlider', maxValue: '50000000000' },
+                { id: 'bkwireLiabilitySlider', maxValue: '50000000000' },
+                { id: 'bkwireLossAmountSlider', maxValue: '100000000000' }
+            ];
+            sliders.forEach(sliderConfig => {
+                const slider = document.getElementById(sliderConfig.id);
                 if (slider) {
                     const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
                     thumbs[0].style.left = '0%';
                     thumbs[1].style.left = '100%';
                     thumbs[0].setAttribute('data-value', '0');
-                    thumbs[1].setAttribute('data-value', '50000000000');
+                    thumbs[1].setAttribute('data-value', sliderConfig.maxValue);
                     bkwireUpdateSliderRange(slider);
                 }
             });
@@ -1236,6 +1252,8 @@
         function bkwireInit() {
             bkwireRenderTable();
             bkwireSetupEventListeners();
+            // Show appropriate filters for the default tab (impacted)
+            bkwireUpdateFilterVisibility('impacted');
         }
 
         // Setup event listeners
@@ -1341,7 +1359,17 @@
                     }
                 }
                 
-                return matchesSearch && matchesState && matchesCity && matchesChapterType && matchesAssetRange && matchesLiabilityRange;
+                // Loss amount filter (impacted only)
+                let matchesLossAmount = true;
+                if (bkwireCurrentTab === 'impacted') {
+                    const lossAmountRange = bkwireGetLossAmountRange();
+                    if (lossAmountRange.min !== 0 || lossAmountRange.max !== 100000000000) {
+                        const lossValue = company.Loss || 0;
+                        matchesLossAmount = lossValue >= lossAmountRange.min && lossValue <= lossAmountRange.max;
+                    }
+                }
+                
+                return matchesSearch && matchesState && matchesCity && matchesChapterType && matchesAssetRange && matchesLiabilityRange && matchesLossAmount;
             });
             bkwireRenderTable();
         }
