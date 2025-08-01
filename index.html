@@ -1,0 +1,170 @@
+        <!-- Left Sidebar Filters -->
+        <div class="bkwire-left-sidebar" id="bkwireLeftSidebar">
+            <div class="bkwire-filter-section">
+                <div class="bkwire-filter-title">
+                    Filter
+                    <a href="#" class="bkwire-clear-link" onclick="bkwireClearFilters()">Clear</a>
+                </div>
+            </div>
+
+            <!-- Chapter Type Filter (Corporate only) -->
+            <div class="bkwire-filter-section" id="bkwireChapterTypeSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Chapter Type
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-checkbox-group">
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter7" value="7">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter7">Chapter 7</label>
+                    </div>
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter11" value="11">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter11">Chapter 11</label>
+                    </div>
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter13" value="13">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter13">Chapter 13</label>
+                    </div>
+                    <div class="bkwire-checkbox-item">
+                        <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter12" value="12">
+                        <label class="bkwire-checkbox-label" for="bkwireChapter12">Chapter 12</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Asset Range Filter (Corporate only) -->
+            <div class="bkwire-filter-section" id="bkwireAssetRangeSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Asset Range
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-amount-range">
+                    <span>0 - 50B ($)</span>
+                </div>
+                <div class="bkwire-slider-track" id="bkwireAssetSlider">
+                    <div class="bkwire-slider-range"></div>
+                    <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                    <div class="bkwire-slider-thumb bkwire-right" data-value="50000000000"></div>
+                </div>
+                <div class="bkwire-slider-labels">
+                    <span>0</span>
+                    <span>1M</span>
+                    <span>10M</span>
+                    <span>100M</span>
+                    <span>1B</span>
+                    <span>10B</span>
+                    <span>50B</span>
+                </div>
+            </div>
+
+            <!-- Liability Range Filter (Corporate only) -->
+            <div class="bkwire-filter-section" id="bkwireLiabilityRangeSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Liability Range
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-amount-range">
+                    <span>0 - 50B ($)</span>
+                </div>
+                <div class="bkwire-slider-track" id="bkwireLiabilitySlider">
+                    <div class="bkwire-slider-range"></div>
+                    <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                    <div class="bkwire-slider-thumb bkwire-right" data-value="50000000000"></div>
+                </div>
+                <div class="bkwire-slider-labels">
+                    <span>0</span>
+                    <span>1M</span>
+                    <span>10M</span>
+                    <span>100M</span>
+                    <span>1B</span>
+                    <span>10B</span>
+                    <span>50B</span>
+                </div>
+            </div>
+
+            <!-- Loss Amount Filter (Impacted only) -->
+            <div class="bkwire-filter-section" id="bkwireLossAmountSection" style="display: none;">
+                <div class="bkwire-filter-title">
+                    Loss amount
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-amount-range">
+                    <span>0 - 100B ($)</span>
+                </div>
+                <div class="bkwire-slider-track">
+                    <div class="bkwire-slider-range"></div>
+                    <div class="bkwire-slider-thumb bkwire-left"></div>
+                    <div class="bkwire-slider-thumb bkwire-right"></div>
+                </div>
+                <div class="bkwire-slider-labels">
+                    <span>0</span>
+                    <span>10K</span>
+                    <span>100K</span>
+                    <span>1M</span>
+                    <span>10M</span>
+                    <span>100M</span>
+                </div>
+            </div>
+
+            <!-- Location Filter (All tabs) -->
+            <div class="bkwire-filter-section" id="bkwireLocationSection">
+                <div class="bkwire-filter-title">
+                    Location
+                    <span class="bkwire-collapse-icon">^</span>
+                </div>
+                <div class="bkwire-location-fields">
+                    <div class="bkwire-field-group">
+                        <span class="bkwire-field-text">State</span>
+                        <select class="bkwire-filter-select" id="bkwireStateFilter">
+                            <option value="">Any state</option>
+                            <option value="TX">Texas</option>
+                            <option value="GA">Georgia</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="IL">Illinois</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="MO">Missouri</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="CA">California</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="WA">Washington</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="FL">Florida</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="UT">Utah</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="KS">Kansas</option>
+                        </select>
+                    </div>
+                    <div class="bkwire-field-group">
+                        <span class="bkwire-field-text">City</span>
+                        <select class="bkwire-filter-select" id="bkwireCityFilter">
+                            <option value="">Any city</option>
+                            <option value="Dallas">Dallas</option>
+                            <option value="Norcross">Norcross</option>
+                            <option value="Sapulpa">Sapulpa</option>
+                            <option value="Homer Glen">Homer Glen</option>
+                            <option value="Kennett Square">Kennett Square</option>
+                            <option value="Houston">Houston</option>
+                            <option value="Antioch">Antioch</option>
+                            <option value="Phoenix">Phoenix</option>
+                            <option value="Addison">Addison</option>
+                            <option value="Kansas City">Kansas City</option>
+                            <option value="Atlanta">Atlanta</option>
+                            <option value="Bristol">Bristol</option>
+                            <option value="Seattle">Seattle</option>
+                            <option value="Des Plaines">Des Plaines</option>
+                            <option value="Orange">Orange</option>
+                            <option value="Naperville">Naperville</option>
+                            <option value="Fairfield">Fairfield</option>
+                            <option value="Toledo">Toledo</option>
+                            <option value="Pembroke">Pembroke</option>
+                            <option value="Austin">Austin</option>
+                        </select>
+                    </div>
+                    <div class="bkwire-field-spacer"></div>
+                </div>
+            </div>
+        </div>

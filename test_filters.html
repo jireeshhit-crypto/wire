@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .filter-item { margin: 10px 0; }
+        .result { margin-top: 10px; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Filter Functionality Test</h1>
+    
+    <div class="test-section">
+        <h2>Chapter Type Filter Test</h2>
+        <div class="filter-item">
+            <input type="checkbox" id="ch7" value="7"> <label for="ch7">Chapter 7</label>
+        </div>
+        <div class="filter-item">
+            <input type="checkbox" id="ch11" value="11"> <label for="ch11">Chapter 11</label>
+        </div>
+        <div class="filter-item">
+            <input type="checkbox" id="ch13" value="13"> <label for="ch13">Chapter 13</label>
+        </div>
+        <div class="filter-item">
+            <input type="checkbox" id="ch12" value="12"> <label for="ch12">Chapter 12</label>
+        </div>
+        <button onclick="testChapterFilter()">Test Chapter Filter</button>
+        <div id="chapterResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Asset Range Test</h2>
+        <div class="filter-item">
+            <label>Asset Range: <span id="assetRange">0 - 50B</span></label>
+        </div>
+        <div class="filter-item">
+            <input type="range" id="assetMin" min="0" max="50000000000" value="0" step="1000000">
+            <input type="range" id="assetMax" min="0" max="50000000000" value="50000000000" step="1000000">
+        </div>
+        <button onclick="testAssetFilter()">Test Asset Filter</button>
+        <div id="assetResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Liability Range Test</h2>
+        <div class="filter-item">
+            <label>Liability Range: <span id="liabilityRange">0 - 50B</span></label>
+        </div>
+        <div class="filter-item">
+            <input type="range" id="liabilityMin" min="0" max="50000000000" value="0" step="1000000">
+            <input type="range" id="liabilityMax" min="0" max="50000000000" value="50000000000" step="1000000">
+        </div>
+        <button onclick="testLiabilityFilter()">Test Liability Filter</button>
+        <div id="liabilityResult" class="result"></div>
+    </div>
+
+    <script>
+        // Test data
+        const testData = [
+            { "Corporate Bankruptcy": "Test Corp 1", "Chapter Type": 7, "Assets": "1M - 10M", "Liabilities": "500K - 1M" },
+            { "Corporate Bankruptcy": "Test Corp 2", "Chapter Type": 11, "Assets": "10M - 50M", "Liabilities": "5M - 10M" },
+            { "Corporate Bankruptcy": "Test Corp 3", "Chapter Type": 13, "Assets": "100M - 500M", "Liabilities": "50M - 100M" },
+            { "Corporate Bankruptcy": "Test Corp 4", "Chapter Type": 12, "Assets": "1B - 10B", "Liabilities": "500M - 1B" }
+        ];
+
+        function bkwireParseAssetValue(value) {
+            if (!value) return 0;
+            
+            const str = value.toString();
+            if (str.includes('B')) {
+                return parseFloat(str.replace('B', '')) * 1000000000;
+            } else if (str.includes('M')) {
+                return parseFloat(str.replace('M', '')) * 1000000;
+            } else if (str.includes('K')) {
+                return parseFloat(str.replace('K', '')) * 1000;
+            } else {
+                return parseFloat(str) || 0;
+            }
+        }
+
+        function testChapterFilter() {
+            const selectedChapters = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+                selectedChapters.push(parseInt(checkbox.value));
+            });
+            
+            const filtered = testData.filter(item => {
+                if (selectedChapters.length === 0) return true;
+                return selectedChapters.includes(item['Chapter Type']);
+            });
+            
+            document.getElementById('chapterResult').innerHTML = 
+                `Selected chapters: [${selectedChapters.join(', ')}]<br>
+                 Filtered results: ${filtered.length} items<br>
+                 ${filtered.map(item => `${item['Corporate Bankruptcy']} (Chapter ${item['Chapter Type']})`).join('<br>')}`;
+        }
+
+        function testAssetFilter() {
+            const min = parseInt(document.getElementById('assetMin').value);
+            const max = parseInt(document.getElementById('assetMax').value);
+            
+            document.getElementById('assetRange').textContent = 
+                `${(min/1000000).toFixed(1)}M - ${(max/1000000).toFixed(1)}M`;
+            
+            const filtered = testData.filter(item => {
+                const assetValue = bkwireParseAssetValue(item.Assets);
+                return assetValue >= min && assetValue <= max;
+            });
+            
+            document.getElementById('assetResult').innerHTML = 
+                `Asset range: ${(min/1000000).toFixed(1)}M - ${(max/1000000).toFixed(1)}M<br>
+                 Filtered results: ${filtered.length} items<br>
+                 ${filtered.map(item => `${item['Corporate Bankruptcy']} (${item.Assets})`).join('<br>')}`;
+        }
+
+        function testLiabilityFilter() {
+            const min = parseInt(document.getElementById('liabilityMin').value);
+            const max = parseInt(document.getElementById('liabilityMax').value);
+            
+            document.getElementById('liabilityRange').textContent = 
+                `${(min/1000000).toFixed(1)}M - ${(max/1000000).toFixed(1)}M`;
+            
+            const filtered = testData.filter(item => {
+                const liabilityValue = bkwireParseAssetValue(item.Liabilities);
+                return liabilityValue >= min && liabilityValue <= max;
+            });
+            
+            document.getElementById('liabilityResult').innerHTML = 
+                `Liability range: ${(min/1000000).toFixed(1)}M - ${(max/1000000).toFixed(1)}M<br>
+                 Filtered results: ${filtered.length} items<br>
+                 ${filtered.map(item => `${item['Corporate Bankruptcy']} (${item.Liabilities})`).join('<br>')}`;
+        }
+    </script>
+</body>
+</html>
