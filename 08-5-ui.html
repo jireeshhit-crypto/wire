@@ -1,0 +1,1615 @@
+<div class="bkwire-root" id="bkwire-ui">
+    <!-- Header Navigation -->
+    <div class="bkwire-header-nav">
+        <div class="bkwire-header-container"></div>
+        <div class="bkwire-nav-tabs">
+            <button class="bkwire-nav-tab" data-tab="corporate">Corporate Bankruptcy</button>
+            <button class="bkwire-nav-tab bkwire-active" data-tab="impacted">Impacted Business</button>
+            <button class="bkwire-nav-tab" data-tab="creditor">Creditor Matrix</button>
+        </div>
+    </div>
+    <div class="bkwire-container">
+        <!-- Left Sidebar Filters -->
+        <div class="bkwire-left-sidebar" id="bkwireLeftSidebar">
+            <div class="bkwire-filter-section">
+                <div class="bkwire-filter-title">
+                    Filter
+                    <a href="#" class="bkwire-clear-link" onclick="bkwireClearFilters()">Clear</a>
+                </div>
+            </div>
+        <!-- Chapter Type Filter (Corporate only) -->
+        <div class="bkwire-filter-section" id="bkwireChapterTypeSection" style="display: none;">
+            <div class="bkwire-filter-title">
+                Chapter Type
+                <span class="bkwire-collapse-icon">^</span>
+            </div>
+            <div class="bkwire-checkbox-group">
+                <div class="bkwire-checkbox-item">
+                    <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter7" value="7">
+                    <label class="bkwire-checkbox-label" for="bkwireChapter7">Chapter 7</label>
+                </div>
+                <div class="bkwire-checkbox-item">
+                    <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter11" value="11">
+                    <label class="bkwire-checkbox-label" for="bkwireChapter11">Chapter 11</label>
+                </div>
+                <div class="bkwire-checkbox-item">
+                    <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter13" value="13">
+                    <label class="bkwire-checkbox-label" for="bkwireChapter13">Chapter 13</label>
+                </div>
+                <div class="bkwire-checkbox-item">
+                    <input type="checkbox" class="bkwire-checkbox" id="bkwireChapter12" value="12">
+                    <label class="bkwire-checkbox-label" for="bkwireChapter12">Chapter 12</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Asset Range Filter (Corporate only) -->
+        <div class="bkwire-filter-section" id="bkwireAssetRangeSection" style="display: none;">
+            <div class="bkwire-filter-title">
+                Asset Range
+                <span class="bkwire-collapse-icon">^</span>
+            </div>
+            <div class="bkwire-amount-range">
+                <span>0 - 50B ($)</span>
+            </div>
+            <div class="bkwire-slider-track" id="bkwireAssetSlider">
+                <div class="bkwire-slider-range"></div>
+                <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                <div class="bkwire-slider-thumb bkwire-right" data-value="50000000000"></div>
+            </div>
+            <div class="bkwire-slider-labels">
+                <span>0</span>
+                <span>1M</span>
+                <span>10M</span>
+                <span>100M</span>
+                <span>1B</span>
+                <span>10B</span>
+                <span>50B</span>
+            </div>
+        </div>
+
+        <!-- Liability Range Filter (Corporate only) -->
+        <div class="bkwire-filter-section" id="bkwireLiabilityRangeSection" style="display: none;">
+            <div class="bkwire-filter-title">
+                Liability Range
+                <span class="bkwire-collapse-icon">^</span>
+            </div>
+            <div class="bkwire-amount-range">
+                <span>0 - 50B ($)</span>
+            </div>
+            <div class="bkwire-slider-track" id="bkwireLiabilitySlider">
+                <div class="bkwire-slider-range"></div>
+                <div class="bkwire-slider-thumb bkwire-left" data-value="0"></div>
+                <div class="bkwire-slider-thumb bkwire-right" data-value="50000000000"></div>
+            </div>
+            <div class="bkwire-slider-labels">
+                <span>0</span>
+                <span>1M</span>
+                <span>10M</span>
+                <span>100M</span>
+                <span>1B</span>
+                <span>10B</span>
+                <span>50B</span>
+            </div>
+        </div>
+
+        <!-- Loss Amount Filter (Impacted only) -->
+        <div class="bkwire-filter-section" id="bkwireLossAmountSection">
+            <div class="bkwire-filter-title">
+                Loss amount
+                <span class="bkwire-collapse-icon">^</span>
+            </div>
+            <div class="bkwire-amount-range">
+                <span>0 - 100B ($)</span>
+            </div>
+            <div class="bkwire-slider-track">
+                <div class="bkwire-slider-range"></div>
+                <div class="bkwire-slider-thumb bkwire-left"></div>
+                <div class="bkwire-slider-thumb bkwire-right"></div>
+            </div>
+            <div class="bkwire-slider-labels">
+                <span>0</span>
+                <span>10K</span>
+                <span>100K</span>
+                <span>1M</span>
+                <span>10M</span>
+                <span>100M</span>
+            </div>
+        </div>
+
+        <!-- Location Filter (All tabs) -->
+        <div class="bkwire-filter-section" id="bkwireLocationSection">
+            <div class="bkwire-filter-title">
+                Location
+                <span class="bkwire-collapse-icon">^</span>
+            </div>
+            <div class="bkwire-location-fields">
+                <div class="bkwire-field-group">
+                    <span class="bkwire-field-text">State</span>
+                    <select class="bkwire-filter-select" id="bkwireStateFilter">
+                        <option value="">Any state</option>
+                        <option value="TX">Texas</option>
+                        <option value="GA">Georgia</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="IL">Illinois</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="MO">Missouri</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="CA">California</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="WA">Washington</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="FL">Florida</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="UT">Utah</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="KS">Kansas</option>
+                    </select>
+                </div>
+                <div class="bkwire-field-group">
+                    <span class="bkwire-field-text">City</span>
+                    <select class="bkwire-filter-select" id="bkwireCityFilter">
+                        <option value="">Any city</option>
+                        <option value="Dallas">Dallas</option>
+                        <option value="Norcross">Norcross</option>
+                        <option value="Sapulpa">Sapulpa</option>
+                        <option value="Homer Glen">Homer Glen</option>
+                        <option value="Kennett Square">Kennett Square</option>
+                        <option value="Houston">Houston</option>
+                        <option value="Antioch">Antioch</option>
+                        <option value="Phoenix">Phoenix</option>
+                        <option value="Addison">Addison</option>
+                        <option value="Kansas City">Kansas City</option>
+                        <option value="Atlanta">Atlanta</option>
+                        <option value="Bristol">Bristol</option>
+                        <option value="Seattle">Seattle</option>
+                        <option value="Des Plaines">Des Plaines</option>
+                        <option value="Orange">Orange</option>
+                        <option value="Naperville">Naperville</option>
+                        <option value="Fairfield">Fairfield</option>
+                        <option value="Toledo">Toledo</option>
+                        <option value="Pembroke">Pembroke</option>
+                        <option value="Austin">Austin</option>
+                    </select>
+                </div>
+                <div class="bkwire-field-spacer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="bkwire-main-content" id="bkwireListView">
+        <div class="bkwire-content-header">
+            <p class="bkwire-page-title">Impacted Business</p>
+        </div>
+        
+        <div class="bkwire-search-container">
+            <div class="bkwire-search-icon">🔍</div>
+            <input type="text" class="bkwire-search-input" placeholder="Search" id="bkwireSearchInput">
+        </div>
+
+        <div class="bkwire-table-container">
+            <table class="bkwire-data-table">
+                <thead class="bkwire-table-header">
+                    <tr>
+                        <th>Impacted Business</th>
+                        <th>BKWire Zone</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Corporate Bankruptcy</th>
+                        <th>Loss</th>
+                    </tr>
+                </thead>
+                <tbody id="bkwireTableBody">
+                    <!-- Table rows will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Company Detail View -->
+    <div id="bkwireDetailView" class="bkwire-company-detail">
+        <div class="bkwire-detail-container">
+            <div class="bkwire-detail-header">
+                <div class="bkwire-header-row">
+                  <button class="bkwire-back-btn" onclick="bkwireShowListView()">←</button>
+                  <div class="bkwire-text-content">
+                    <h3 id="bkwireCompanyName">Ferrari</h3>
+                    <p id="bkwireCompanyAddress">Orange, LA</p>
+                  </div>
+                </div>
+            </div>
+
+            <div class="bkwire-detail-content">
+                <!-- Left Sidebar with Stats -->
+                <div class="bkwire-detail-left-sidebar">
+                    <div class="bkwire-stat-item bkwire-assets">
+                        <div class="bkwire-stat-icon">$</div>
+                        <div class="bkwire-stat-label">Assets $</div>
+                        <div class="bkwire-stat-value" id="bkwireAssetsValue">500K - 1M</div>
+                    </div>
+                    
+                    <div class="bkwire-stat-item bkwire-liabilities">
+                        <div class="bkwire-stat-icon">📊</div>
+                        <div class="bkwire-stat-label">Liabilities $</div>
+                        <div class="bkwire-stat-value" id="bkwireLiabilitiesValue">1M - 10M</div>
+                    </div>
+                    
+                    <div class="bkwire-stat-item bkwire-business">
+                        <div class="bkwire-stat-icon">✓</div>
+                        <div class="bkwire-stat-label">BKWire Zone</div>
+                        <div class="bkwire-stat-value" id="bkwireBusinessType">Business<br>Services</div>
+                    </div>
+                    
+                    <div class="bkwire-stat-item bkwire-court">
+                        <div class="bkwire-stat-icon">⚖</div>
+                        <div class="bkwire-stat-label">Court</div>
+                        <div class="bkwire-stat-value" id="bkwireCourtName">California Central<br>Bankruptcy Court</div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="bkwire-detail-main-content">
+                    <div class="bkwire-content-section">
+                        <p class="bkwire-section-title" id="bkwireDetailSectionTitle">Details</p>
+                        <div class="bkwire-info-grid" id="bkwireDetailInfoGrid">
+                            <!-- Dynamic content will be inserted here -->
+                        </div>
+                    </div>
+
+                    <div class="bkwire-content-section">
+                        <p class="bkwire-section-title">Loss information</p>
+                        <div class="bkwire-info-grid" id="bkwireAdditionalInfoGrid">
+                            <!-- Dynamic content will be inserted here -->
+                        </div>
+                    </div>
+                    <div class="bkwire-related-companies" id="bkwireRelatedCompanies">
+                        <p class="bkwire-section-title">Related Companies</p>
+                        <div class="bkwire-related-list" id="bkwireRelatedList"></div>
+                    </div>
+                    
+                    <div class="bkwire-signup-section">
+                        <button class="bkwire-signup-btn">Signup</button>
+                        <div class="bkwire-signup-text">To see more data</div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div class="bkwire-detail-right-sidebar">
+                    <div class="bkwire-case-petition">
+                        <p>Case Petition</p>
+                        <div class="bkwire-case-petition-content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<style>
+.bkwire-root {
+  width: 100%;
+  max-width: 100%;
+    height:545px;
+  overflow: hidden;
+  background: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+.bkwire-header-nav,
+.bkwire-left-sidebar {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  z-index: auto !important;
+  border-radius: 0 !important;
+}
+.bkwire-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 600px;
+  height: auto;
+  background: transparent;
+  overflow: hidden;
+}
+.bkwire-left-sidebar {
+  width: 220px;
+  min-width: 180px;
+  max-width: 100%;
+  height: auto;
+  margin-top: 16px !important;
+  border-right: 1px solid #e8eaed;
+  overflow: hidden;
+  background: #fff;
+}
+.bkwire-main-content {
+  flex: 1;
+  margin-left: 0;
+  margin-top: 0;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+@media (max-width: 1024px) {
+  .bkwire-container {
+    flex-direction: column;
+  }
+  .bkwire-main-content, .bkwire-left-sidebar {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+.bkwire-header-nav {
+  width: 100%;
+  border-bottom: 1px solid #e8eaed;
+  background: white;
+  padding: 0;
+  margin-bottom: 0;
+}
+.bkwire-root, .bkwire-container, .bkwire-main-content {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.bkwire-root * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.bkwire-header-container {
+    height: 64px;
+    background: #293681;
+    width: 100%;
+}
+
+.bkwire-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Header Navigation Tabs */
+.bkwire-header-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    z-index: 1000;
+    padding: 0;
+    border-bottom: 1px solid #e8eaed;
+}
+
+.bkwire-nav-tabs {
+    display: flex;
+    background: white;
+    margin: 0;
+    padding: 0;
+}
+
+.bkwire-nav-tab {
+    padding: 15px 25px;
+    background: transparent;
+    border: none;
+    color: #5f6368;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.bkwire-nav-tab:hover {
+    background: rgba(26, 115, 232, 0.05);
+    color: #1a73e8;
+}
+
+.bkwire-nav-tab.bkwire-active {
+    background: transparent;
+    color: #1a73e8;
+    border-bottom: 3px solid #1a73e8;
+}
+
+/* Left Sidebar */
+.bkwire-left-sidebar {
+    padding: 20px;
+    height: calc(100vh - 60px);
+    position: fixed;
+}
+
+.bkwire-filter-section {
+    margin-bottom: 25px;
+}
+
+.bkwire-filter-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.bkwire-collapse-icon {
+    font-size: 12px;
+    color: #5f6368;
+    transition: transform 0.3s ease;
+}
+
+.bkwire-clear-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.bkwire-clear-link:hover {
+    text-decoration: underline;
+}
+
+.bkwire-filter-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.bkwire-date-input-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.bkwire-date-input {
+    padding-right: 30px;
+}
+
+.bkwire-calendar-icon {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5f6368;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.bkwire-filter-input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 1px #1a73e8;
+}
+
+.bkwire-filter-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+}
+
+.bkwire-filter-select:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 1px #1a73e8;
+}
+
+.bkwire-location-fields {
+    margin-top: 10px;
+}
+
+.bkwire-field-group {
+    margin-bottom: 15px;
+}
+
+.bkwire-field-label {
+    display: block;
+    font-size: 12px;
+    color: #5f6368;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.bkwire-field-text {
+    display: block;
+    font-size: 12px;
+    color: #5f6368;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.bkwire-field-spacer {
+    height: 20px;
+}
+
+.bkwire-amount-slider-container {
+    margin-top: 10px;
+}
+
+.bkwire-amount-range {
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    color: #5f6368;
+    margin-bottom: 10px;
+}
+
+.bkwire-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #5f6368;
+    margin-top: 5px;
+}
+
+.bkwire-slider-track {
+    position: relative;
+    height: 4px;
+    background: #dadce0;
+    border-radius: 2px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.bkwire-slider-range {
+    position: absolute;
+    height: 100%;
+    background: #1a73e8;
+    border-radius: 2px;
+    left: 0%;
+    width: 100%;
+}
+
+.bkwire-slider-thumb {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #1a73e8;
+    border-radius: 50%;
+    top: -6px;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+.bkwire-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.bkwire-slider-thumb.bkwire-left {
+    left: 0%;
+}
+
+.bkwire-slider-thumb.bkwire-right {
+    right: 0%;
+}
+
+.bkwire-checkbox-group {
+    margin-top: 10px;
+}
+
+.bkwire-checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.bkwire-checkbox {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.bkwire-checkbox-label {
+    font-size: 13px;
+    color: #202124;
+    cursor: pointer;
+}
+
+/* Main Content */
+.bkwire-main-content {
+    flex: 1;
+    margin-left: 16px;
+    margin-top: 16px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bkwire-content-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.bkwire-page-title {
+    font-size: 24px;
+    font-weight: 400;
+    color: #1a73e8;
+    margin-right: 20px;
+}
+
+.bkwire-search-container {
+    position: relative;
+    max-width: 400px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.bkwire-search-input {
+    width: 100%;
+    padding: 10px 12px 10px 35px;
+    border: 2px solid #1a73e8;
+    border-radius: 4px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+}
+
+.bkwire-search-input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 1px #1a73e8;
+}
+
+.bkwire-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5f6368;
+    font-size: 16px;
+    z-index: 1;
+}
+
+/* Table Styles */
+.bkwire-table-container {
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bkwire-data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.bkwire-table-header {
+   background: #d5d6d6;
+    border-bottom: 1px solid #e8eaed;
+}
+
+.bkwire-table-header th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+    color: #151616;
+    white-space: nowrap;
+}
+
+.bkwire-table-row {
+    border-bottom: 1px solid #e8eaed;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.bkwire-table-row:hover {
+    background: #f8f9fa;
+}
+
+.bkwire-table-row.bkwire-premium {
+    opacity: 0.6;
+    background: #f8f9fa;
+    position: relative;
+}
+
+.bkwire-table-row.bkwire-premium::after {
+    content: "🔒 Premium";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ff9800;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.bkwire-table-row td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #202124;
+}
+
+.bkwire-company-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.bkwire-company-link:hover {
+    text-decoration: underline;
+}
+
+/* Company Detail View */
+.bkwire-company-detail {
+    width: 100%;
+    display: none;
+    margin-left: 0;
+}
+
+.bkwire-company-detail.bkwire-active {
+    display: block;
+}
+
+.bkwire-back-btn {
+    background: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-top: 2em;
+}
+
+.bkwire-back-btn:hover {
+    background: #4a6fa5;
+}
+
+.bkwire-detail-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.bkwire-detail-header {
+    background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+    color: white;
+    text-align: left;
+}
+
+.bkwire-header-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.bkwire-text-content h3 {
+    color: white !important;
+}
+
+.bkwire-text-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.bkwire-detail-content {
+    display: grid;
+    grid-template-columns: 200px 1fr 300px;
+    min-height: 600px;
+}
+
+/* Left Sidebar Stats */
+.bkwire-detail-left-sidebar {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px;
+}
+
+.bkwire-stat-item {
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    background: white;
+}
+
+.bkwire-stat-item:hover {
+    background: #e9ecef;
+}
+
+.bkwire-stat-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.bkwire-stat-item.bkwire-assets .bkwire-stat-icon {
+    background: #dc3545;
+}
+
+.bkwire-stat-item.bkwire-liabilities .bkwire-stat-icon {
+    background: #fd7e14;
+}
+
+.bkwire-stat-item.bkwire-business .bkwire-stat-icon {
+    background: #28a745;
+}
+
+.bkwire-stat-item.bkwire-court .bkwire-stat-icon {
+    background: #6f42c1;
+}
+
+.bkwire-stat-label {
+    font-size: 11px;
+    color: #6c757d;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.bkwire-stat-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+.bkwire-content-section {
+    margin-top: 16px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+}
+
+.bkwire-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 16px;
+}
+
+.bkwire-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.bkwire-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.bkwire-info-label {
+    font-size: 12px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.bkwire-info-value {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.bkwire-signup-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.bkwire-signup-btn {
+    background: linear-gradient(135deg, #4a6fa5 0%, #2c3e50 100%);
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.bkwire-signup-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.bkwire-signup-text {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.bkwire-detail-right-sidebar {
+    background: #f8f9fa;
+    margin: 16px;
+}
+
+.bkwire-case-petition {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.bkwire-case-petition h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.bkwire-case-petition-content {
+    font-size: 14px;
+    color: #6c757d;
+    line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .bkwire-left-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .bkwire-left-sidebar.bkwire-open {
+        transform: translateX(0);
+    }
+
+    .bkwire-main-content {
+        margin-left: 0;
+    }
+
+    .bkwire-detail-content {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    
+    .bkwire-detail-left-sidebar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: white;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .bkwire-stat-item {
+        border-bottom: none;
+        border-right: 1px solid #e9ecef;
+    }
+    
+    .bkwire-stat-item:last-child {
+        border-right: none;
+    }
+    
+    .bkwire-detail-right-sidebar {
+        border-left: none;
+        border-top: 1px solid #e9ecef;
+    }
+}
+
+@media (max-width: 768px) {
+    .bkwire-nav-tabs {
+        flex-direction: column;
+    }
+
+    .bkwire-content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .bkwire-search-container {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .bkwire-detail-left-sidebar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .bkwire-detail-main-content,
+    .bkwire-detail-right-sidebar {
+        padding: 20px;
+    }
+    
+    .bkwire-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bkwire-table-container table,
+.bkwire-table-container table th,
+.bkwire-table-container table td {
+border: none !important;
+}
+
+
+</style>
+<script>
+    // Enhanced company data matching the reference image
+const bkwireAllData = {
+corporate: [
+{"id":1,"Date Added":"6/5/2025","Date Filed":"5/5/2025","Case Number":"8:2025bk80100","Corporate Bankruptcy":"Harvest Meat Company, Inc","BKwire Zone":"Food","City":"Dallas","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1B - 10B","Liabilities":"500M - 1B","Loss":"$15,571,352","Impacted Business":"National Beef Packing Co."},
+{"id":2,"Date Added":"15/1/2025","Date Filed":"14/1/2025","Case Number":"1:2025bk50430","Corporate Bankruptcy":"Nutracap Holdings, LLC","BKwire Zone":"Business Services","City":"Norcross","State":"GA","Chapter Type":"11","Creditors":"100 - 199","Assets":"10M - 50M","Liabilities":"10M - 50M","Loss":"$400,210","Impacted Business":"Nash Commercial Incorporated"},
+{"id":3,"Date Added":"22/5/2025","Date Filed":"21/5/2025","Case Number":"7:2025bk80433","Corporate Bankruptcy":"Paragon Industries, Inc.","BKwire Zone":"Manufacturing","City":"Sapulpa","State":"OK","Chapter Type":"11","Creditors":"200 - 999","Assets":"100M - 500M","Liabilities":"100M - 500M","Loss":"$33,720,289","Impacted Business":"Nucor Steel Corporation"},
+{"id":4,"Date Added":"3/3/2025","Date Filed":"2/3/2025","Case Number":"1:2025bk03258","Corporate Bankruptcy":"Glide Logistics, Inc.","BKwire Zone":"Transportation","City":"Homer Glen","State":"IL","Chapter Type":"11","Creditors":"1 - 49","Assets":"1M - 10M","Liabilities":"1M - 10M","Loss":"$22,214","Impacted Business":"Pilot Travel Centers LLC"},
+{"id":5,"Date Added":"11/7/2025","Date Filed":"10/7/2025","Case Number":"8:2025bk80480","Corporate Bankruptcy":"SunBridge Healthcare, LLC","BKwire Zone":"Medical","City":"Kennett Square","State":"PA","Chapter Type":"11","Creditors":"10001 - 25000","Assets":"1B - 10B","Liabilities":"1B - 10B","Loss":"$32,320,666","Impacted Business":"MEDLINE INDUSTRIES INC"},
+{"id":6,"Date Added":"22/4/2025","Date Filed":"21/4/2025","Case Number":"4:2025bk90127","Corporate Bankruptcy":"Ascend Performance Materials Holdings Inc.","BKwire Zone":"Business Services","City":"Houston","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1B - 10B","Liabilities":"1B - 10B","Loss":"$25,136,004","Impacted Business":"SDI Inc"},
+{"id":7,"Date Added":"4/2/2025","Date Filed":"3/2/2025","Case Number":"3:2025bk00452","Corporate Bankruptcy":"Essex Technology Group, LLC","BKwire Zone":"Retail","City":"Antioch","State":"TN","Chapter Type":"11","Creditors":"1000 - 5000","Assets":"10M - 50M","Liabilities":"50M - 100M","Loss":"$29,360,641","Impacted Business":"Amazon.com"},
+{"id":8,"Date Added":"11/6/2025","Date Filed":"8/6/2025","Case Number":"4:2025bk90160","Corporate Bankruptcy":"Sunnova Energy International Inc.","BKwire Zone":"Energy","City":"Houston","State":"TX","Chapter Type":"11","Creditors":"100001 - 100001","Assets":"10B - 50B","Liabilities":"10B - 50B","Loss":"$78,747,427","Impacted Business":"Trinity Solar"},
+{"id":9,"Date Added":"2/6/2025","Date Filed":"30/5/2025","Case Number":"2:2025bk04964","Corporate Bankruptcy":"Marrs Construction, Inc.","BKwire Zone":"Construction","City":"Phoenix","State":"AZ","Chapter Type":"11","Creditors":"100 - 199","Assets":"10M - 50M","Liabilities":"10M - 50M","Loss":"$2,581,055","Impacted Business":"Martin Marietta Materials Inc"},
+{"id":10,"Date Added":"27/3/2025","Date Filed":"26/3/2025","Case Number":"1:2025bk10580","Corporate Bankruptcy":"BLH White Marsh LLC","BKwire Zone":"Hospitality","City":"Addison","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1M - 10M","Liabilities":"50M - 100M","Loss":"$1,819,160","Impacted Business":"US Foods Dallas"}
+]
+,
+impacted: [
+{"id":1,"Date Added":"6/5/2025","Date Filed":"5/5/2025","Case Number":"8:2025bk80100","Corporate Bankruptcy":"Harvest Meat Company, Inc","BKwire Zone":"Food","City":"Dallas","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1B - 10B","Liabilities":"500M - 1B","Loss":"$15,571,352","Impacted Business":"National Beef Packing Co."},
+{"id":2,"Date Added":"15/1/2025","Date Filed":"14/1/2025","Case Number":"1:2025bk50430","Corporate Bankruptcy":"Nutracap Holdings, LLC","BKwire Zone":"Business Services","City":"Norcross","State":"GA","Chapter Type":"11","Creditors":"100 - 199","Assets":"10M - 50M","Liabilities":"10M - 50M","Loss":"$400,210","Impacted Business":"Nash Commercial Incorporated"},
+{"id":3,"Date Added":"22/5/2025","Date Filed":"21/5/2025","Case Number":"7:2025bk80433","Corporate Bankruptcy":"Paragon Industries, Inc.","BKwire Zone":"Manufacturing","City":"Sapulpa","State":"OK","Chapter Type":"11","Creditors":"200 - 999","Assets":"100M - 500M","Liabilities":"100M - 500M","Loss":"$33,720,289","Impacted Business":"Nucor Steel Corporation"},
+{"id":4,"Date Added":"3/3/2025","Date Filed":"2/3/2025","Case Number":"1:2025bk03258","Corporate Bankruptcy":"Glide Logistics, Inc.","BKwire Zone":"Transportation","City":"Homer Glen","State":"IL","Chapter Type":"11","Creditors":"1 - 49","Assets":"1M - 10M","Liabilities":"1M - 10M","Loss":"$22,214","Impacted Business":"Pilot Travel Centers LLC"},
+{"id":5,"Date Added":"11/7/2025","Date Filed":"10/7/2025","Case Number":"8:2025bk80480","Corporate Bankruptcy":"SunBridge Healthcare, LLC","BKwire Zone":"Medical","City":"Kennett Square","State":"PA","Chapter Type":"11","Creditors":"10001 - 25000","Assets":"1B - 10B","Liabilities":"1B - 10B","Loss":"$32,320,666","Impacted Business":"MEDLINE INDUSTRIES INC"},
+{"id":6,"Date Added":"22/4/2025","Date Filed":"21/4/2025","Case Number":"4:2025bk90127","Corporate Bankruptcy":"Ascend Performance Materials Holdings Inc.","BKwire Zone":"Business Services","City":"Houston","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1B - 10B","Liabilities":"1B - 10B","Loss":"$25,136,004","Impacted Business":"SDI Inc"},
+{"id":7,"Date Added":"4/2/2025","Date Filed":"3/2/2025","Case Number":"3:2025bk00452","Corporate Bankruptcy":"Essex Technology Group, LLC","BKwire Zone":"Retail","City":"Antioch","State":"TN","Chapter Type":"11","Creditors":"1000 - 5000","Assets":"10M - 50M","Liabilities":"50M - 100M","Loss":"$29,360,641","Impacted Business":"Amazon.com"},
+{"id":8,"Date Added":"11/6/2025","Date Filed":"8/6/2025","Case Number":"4:2025bk90160","Corporate Bankruptcy":"Sunnova Energy International Inc.","BKwire Zone":"Energy","City":"Houston","State":"TX","Chapter Type":"11","Creditors":"100001 - 100001","Assets":"10B - 50B","Liabilities":"10B - 50B","Loss":"$78,747,427","Impacted Business":"Trinity Solar"},
+{"id":9,"Date Added":"2/6/2025","Date Filed":"30/5/2025","Case Number":"2:2025bk04964","Corporate Bankruptcy":"Marrs Construction, Inc.","BKwire Zone":"Construction","City":"Phoenix","State":"AZ","Chapter Type":"11","Creditors":"100 - 199","Assets":"10M - 50M","Liabilities":"10M - 50M","Loss":"$2,581,055","Impacted Business":"Martin Marietta Materials Inc"},
+{"id":10,"Date Added":"27/3/2025","Date Filed":"26/3/2025","Case Number":"1:2025bk10580","Corporate Bankruptcy":"BLH White Marsh LLC","BKwire Zone":"Hospitality","City":"Addison","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1M - 10M","Liabilities":"50M - 100M","Loss":"$1,819,160","Impacted Business":"US Foods Dallas"}
+]
+,
+creditor: [
+{"id":1,"Date Added":"6/5/2025","Date Filed":"5/5/2025","Case Number":"8:2025bk80100","Corporate Bankruptcy":"Harvest Meat Company, Inc","BKwire Zone":"Food","City":"Dallas","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1B - 10B","Liabilities":"500M - 1B","Loss":"$15,571,352","Creditor Name":"National Beef Packing Co."},
+{"id":2,"Date Added":"15/1/2025","Date Filed":"14/1/2025","Case Number":"1:2025bk50430","Corporate Bankruptcy":"Nutracap Holdings, LLC","BKwire Zone":"Business Services","City":"Norcross","State":"GA","Chapter Type":"11","Creditors":"100 - 199","Assets":"10M - 50M","Liabilities":"10M - 50M","Loss":"$400,210","Creditor Name":"Nash Commercial Incorporated"},
+{"id":3,"Date Added":"22/5/2025","Date Filed":"21/5/2025","Case Number":"7:2025bk80433","Corporate Bankruptcy":"Paragon Industries, Inc.","BKwire Zone":"Manufacturing","City":"Sapulpa","State":"OK","Chapter Type":"11","Creditors":"200 - 999","Assets":"100M - 500M","Liabilities":"100M - 500M","Loss":"$33,720,289","Creditor Name":"Nucor Steel Corporation"},
+{"id":4,"Date Added":"3/3/2025","Date Filed":"2/3/2025","Case Number":"1:2025bk03258","Corporate Bankruptcy":"Glide Logistics, Inc.","BKwire Zone":"Transportation","City":"Homer Glen","State":"IL","Chapter Type":"11","Creditors":"1 - 49","Assets":"1M - 10M","Liabilities":"1M - 10M","Loss":"$22,214","Creditor Name":"Pilot Travel Centers LLC"},
+{"id":5,"Date Added":"11/7/2025","Date Filed":"10/7/2025","Case Number":"8:2025bk80480","Corporate Bankruptcy":"SunBridge Healthcare, LLC","BKwire Zone":"Medical","City":"Kennett Square","State":"PA","Chapter Type":"11","Creditors":"10001 - 25000","Assets":"1B - 10B","Liabilities":"1B - 10B","Loss":"$32,320,666","Creditor Name":"MEDLINE INDUSTRIES INC"},
+{"id":6,"Date Added":"22/4/2025","Date Filed":"21/4/2025","Case Number":"4:2025bk90127","Corporate Bankruptcy":"Ascend Performance Materials Holdings Inc.","BKwire Zone":"Business Services","City":"Houston","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1B - 10B","Liabilities":"1B - 10B","Loss":"$25,136,004","Creditor Name":"SDI Inc"},
+{"id":7,"Date Added":"4/2/2025","Date Filed":"3/2/2025","Case Number":"3:2025bk00452","Corporate Bankruptcy":"Essex Technology Group, LLC","BKwire Zone":"Retail","City":"Antioch","State":"TN","Chapter Type":"11","Creditors":"1000 - 5000","Assets":"10M - 50M","Liabilities":"50M - 100M","Loss":"$29,360,641","Creditor Name":"Amazon.com"},
+{"id":8,"Date Added":"11/6/2025","Date Filed":"8/6/2025","Case Number":"4:2025bk90160","Corporate Bankruptcy":"Sunnova Energy International Inc.","BKwire Zone":"Energy","City":"Houston","State":"TX","Chapter Type":"11","Creditors":"100001 - 100001","Assets":"10B - 50B","Liabilities":"10B - 50B","Loss":"$78,747,427","Creditor Name":"Trinity Solar"},
+{"id":9,"Date Added":"2/6/2025","Date Filed":"30/5/2025","Case Number":"2:2025bk04964","Corporate Bankruptcy":"Marrs Construction, Inc.","BKwire Zone":"Construction","City":"Phoenix","State":"AZ","Chapter Type":"11","Creditors":"100 - 199","Assets":"10M - 50M","Liabilities":"10M - 50M","Loss":"$2,581,055","Creditor Name":"Martin Marietta Materials Inc"},
+{"id":10,"Date Added":"27/3/2025","Date Filed":"26/3/2025","Case Number":"1:2025bk10580","Corporate Bankruptcy":"BLH White Marsh LLC","BKwire Zone":"Hospitality","City":"Addison","State":"TX","Chapter Type":"11","Creditors":"5001 - 10000","Assets":"1M - 10M","Liabilities":"50M - 100M","Loss":"$1,819,160","Creditor Name":"US Foods Dallas"}
+]
+
+
+};
+
+
+// Helper: Table configs for each tab
+const bkwireTableConfigs = {
+    corporate: {
+        headers: [
+            'Corporate Bankruptcy', 'BKWire Zone', 'City', 'State', 'Assets', 'Liabilities', 'Chapter Type', 'Creditors'
+        ],
+        fields: [
+            'Corporate Bankruptcy', 'BKwire Zone', 'City', 'State', 'Assets', 'Liabilities', 'Chapter Type', 'Creditors'
+        ],
+        searchFields: [
+            'Corporate Bankruptcy', 'BKwire Zone', 'City', 'State'
+        ]
+    },
+    impacted: {
+        headers: [
+            'Impacted Business', 'BKWire Zone', 'City', 'State', 'Corporate Bankruptcy', 'Loss'
+        ],
+        fields: [
+            'Impacted Business', 'BKwire Zone', 'City', 'State', 'Corporate Bankruptcy', 'Loss'
+        ],
+        searchFields: [
+            'Impacted Business', 'BKwire Zone', 'City', 'State', 'Corporate Bankruptcy'
+        ]
+    },
+    creditor: {
+        headers: [
+            'Creditor Name', 'BKwire Zone', 'Corporate Bankruptcy'
+        ],
+        fields: [
+            'Creditor Name', 'BKwire Zone', 'Corporate Bankruptcy'
+        ],
+        searchFields: [
+            'Creditor Name', 'BKwire Zone', 'Corporate Bankruptcy'
+        ]
+    }
+};
+
+// Set initial data
+let bkwireCompaniesData = bkwireAllData.impacted;
+let bkwireFilteredData = [...bkwireCompaniesData];
+let bkwireCurrentTab = 'impacted';
+
+// DOM elements
+const bkwireListView = document.getElementById('bkwireListView');
+const bkwireDetailView = document.getElementById('bkwireDetailView');
+const bkwireTableBody = document.getElementById('bkwireTableBody');
+const bkwireSearchInput = document.getElementById('bkwireSearchInput');
+const bkwireStateFilter = document.getElementById('bkwireStateFilter');
+const bkwireCityFilter = document.getElementById('bkwireCityFilter');
+
+// Helper function to update filter visibility based on tab
+function bkwireUpdateFilterVisibility(tabName) {
+    const chapterTypeSection = document.getElementById('bkwireChapterTypeSection');
+    const assetRangeSection = document.getElementById('bkwireAssetRangeSection');
+    const liabilityRangeSection = document.getElementById('bkwireLiabilityRangeSection');
+    const lossAmountSection = document.getElementById('bkwireLossAmountSection');
+    const locationSection = document.getElementById('bkwireLocationSection');
+    
+    // Hide all sections first
+    chapterTypeSection.style.display = 'none';
+    assetRangeSection.style.display = 'none';
+    liabilityRangeSection.style.display = 'none';
+    lossAmountSection.style.display = 'none';
+    
+    // Show sections based on tab
+    if (tabName === 'corporate') {
+        chapterTypeSection.style.display = 'block';
+        assetRangeSection.style.display = 'block';
+        liabilityRangeSection.style.display = 'block';
+    } else if (tabName === 'impacted') {
+        lossAmountSection.style.display = 'block';
+    }
+    // Location section is always visible
+}
+
+// Helper function to get selected chapter types
+function bkwireGetSelectedChapterTypes() {
+    const selectedChapters = [];
+    document.querySelectorAll('.bkwire-checkbox:checked').forEach(checkbox => {
+        selectedChapters.push(parseInt(checkbox.value));
+    });
+  
+    return selectedChapters;
+}
+
+// Helper function to get asset range from slider
+function bkwireGetAssetRange() {
+    const slider = document.getElementById('bkwireAssetSlider');
+    if (!slider) return { min: 0, max: 50000000000 };
+    
+    const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+    const min = parseInt(thumbs[0].getAttribute('data-value'));
+    const max = parseInt(thumbs[1].getAttribute('data-value'));
+    return { min: Math.min(min, max), max: Math.max(min, max) };
+}
+
+// Helper function to get liability range from slider
+function bkwireGetLiabilityRange() {
+    const slider = document.getElementById('bkwireLiabilitySlider');
+    if (!slider) return { min: 0, max: 50000000000 };
+    
+    const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+    const min = parseInt(thumbs[0].getAttribute('data-value'));
+    const max = parseInt(thumbs[1].getAttribute('data-value'));
+    return { min: Math.min(min, max), max: Math.max(min, max) };
+}
+
+// Helper function to parse asset/liability values
+function bkwireParseAssetValue(value) {
+    if (!value) return 0;
+    
+    const str = value.toString();
+    if (str.includes('B')) {
+        return parseFloat(str.replace('B', '')) * 1000000000;
+    } else if (str.includes('M')) {
+        return parseFloat(str.replace('M', '')) * 1000000;
+    } else if (str.includes('K')) {
+        return parseFloat(str.replace('K', '')) * 1000;
+    } else {
+        return parseFloat(str) || 0;
+    }
+}
+
+// Helper function to setup sliders
+function bkwireSetupSliders() {
+    bkwireSetupSlider('bkwireAssetSlider');
+    bkwireSetupSlider('bkwireLiabilitySlider');
+}
+
+// Helper function to setup individual slider
+function bkwireSetupSlider(sliderId) {
+    const slider = document.getElementById(sliderId);
+    if (!slider) return;
+    
+    const track = slider.querySelector('.bkwire-slider-track');
+    const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+    const range = slider.querySelector('.bkwire-slider-range');
+    
+    let isDragging = false;
+    let currentThumb = null;
+    
+    thumbs.forEach(thumb => {
+        thumb.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            currentThumb = thumb;
+            e.preventDefault();
+        });
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging || !currentThumb) return;
+        
+        const rect = track.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+        
+        currentThumb.style.left = percentage + '%';
+        currentThumb.setAttribute('data-value', Math.round(percentage * 50000000000 / 100));
+        
+        bkwireUpdateSliderRange(slider);
+        bkwireApplyFilters();
+    });
+    
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        currentThumb = null;
+    });
+}
+
+// Helper function to update slider range display
+function bkwireUpdateSliderRange(slider) {
+    const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+    const range = slider.querySelector('.bkwire-slider-range');
+    
+    const leftPos = parseFloat(thumbs[0].style.left) || 0;
+    const rightPos = parseFloat(thumbs[1].style.left) || 100;
+    
+    const minPos = Math.min(leftPos, rightPos);
+    const maxPos = Math.max(leftPos, rightPos);
+    
+    range.style.left = minPos + '%';
+    range.style.width = (maxPos - minPos) + '%';
+}
+
+// Helper function to reset sliders
+function bkwireResetSliders() {
+    const sliders = ['bkwireAssetSlider', 'bkwireLiabilitySlider'];
+    sliders.forEach(sliderId => {
+        const slider = document.getElementById(sliderId);
+        if (slider) {
+            const thumbs = slider.querySelectorAll('.bkwire-slider-thumb');
+            thumbs[0].style.left = '0%';
+            thumbs[1].style.left = '100%';
+            thumbs[0].setAttribute('data-value', '0');
+            thumbs[1].setAttribute('data-value', '50000000000');
+            bkwireUpdateSliderRange(slider);
+        }
+    });
+}
+
+// Initialize the app
+function bkwireInit() {
+    bkwireRenderTable();
+    bkwireSetupEventListeners();
+}
+
+// Setup event listeners
+function bkwireSetupEventListeners() {
+    // Tab switching
+    document.querySelectorAll('.bkwire-nav-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            bkwireSwitchTab(e.target.dataset.tab);
+        });
+    });
+
+    // Search and filter functionality
+    bkwireSearchInput.addEventListener('input', bkwireApplyFilters);
+    bkwireStateFilter.addEventListener('change', bkwireApplyFilters);
+    bkwireCityFilter.addEventListener('change', bkwireApplyFilters);
+    
+    // Chapter type checkboxes
+    document.querySelectorAll('.bkwire-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', bkwireApplyFilters);
+    });
+    
+    // Asset and Liability sliders
+    bkwireSetupSliders();
+}
+
+// Switch between tabs
+function bkwireSwitchTab(tabName) {
+    document.querySelectorAll('.bkwire-nav-tab').forEach(tab => {
+        tab.classList.remove('bkwire-active');
+    });
+    document.querySelector(`[data-tab="${tabName}"]`).classList.add('bkwire-active');
+    bkwireCurrentTab = tabName;
+
+    // Update companiesData and filteredData
+    if (tabName === 'corporate') {
+        bkwireCompaniesData = bkwireAllData.corporate;
+    } else if (tabName === 'impacted') {
+        bkwireCompaniesData = bkwireAllData.impacted;
+    } else if (tabName === 'creditor') {
+        bkwireCompaniesData = bkwireAllData.creditor;
+    }
+    bkwireFilteredData = [...bkwireCompaniesData];
+
+    // Update page title
+    const pageTitle = document.querySelector('.bkwire-page-title');
+    if (tabName === 'corporate') {
+        pageTitle.textContent = 'Corporate Bankruptcy';
+    } else if (tabName === 'impacted') {
+        pageTitle.textContent = 'Impacted Business';
+    } else if (tabName === 'creditor') {
+        pageTitle.textContent = 'Creditor Matrix';
+    }
+
+    // Show/hide filter sections based on tab
+    bkwireUpdateFilterVisibility(tabName);
+
+    bkwireApplyFilters();
+}
+
+// Apply all filters
+function bkwireApplyFilters() {
+    const config = bkwireTableConfigs[bkwireCurrentTab];
+    const searchTerm = bkwireSearchInput.value.toLowerCase();
+    const stateValue = bkwireStateFilter.value;
+    const cityValue = bkwireCityFilter.value;
+
+    bkwireFilteredData = bkwireCompaniesData.filter(company => {
+        // Search
+        const matchesSearch = searchTerm === '' || config.searchFields.some(field => {
+            return (company[field] || '').toString().toLowerCase().includes(searchTerm);
+        });
+        
+        // Location filters for all tabs
+        const matchesState = stateValue === '' || company.State === stateValue;
+        const matchesCity = cityValue === '' || company.City === cityValue;
+        
+        // Chapter type filter (corporate only)
+        let matchesChapterType = true;
+        if (bkwireCurrentTab === 'corporate') {
+            const selectedChapters = bkwireGetSelectedChapterTypes();
+            if (selectedChapters.length > 0) {
+                matchesChapterType = selectedChapters.includes(company['Chapter Type']);
+            }
+        }
+        
+        // Asset range filter (corporate only)
+        let matchesAssetRange = true;
+        if (bkwireCurrentTab === 'corporate') {
+            const assetRange = bkwireGetAssetRange();
+            if (assetRange.min !== 0 || assetRange.max !== 50000000000) {
+                const assetValue = bkwireParseAssetValue(company.Assets);
+                matchesAssetRange = assetValue >= assetRange.min && assetValue <= assetRange.max;
+            }
+        }
+        
+        // Liability range filter (corporate only)
+        let matchesLiabilityRange = true;
+        if (bkwireCurrentTab === 'corporate') {
+            const liabilityRange = bkwireGetLiabilityRange();
+            if (liabilityRange.min !== 0 || liabilityRange.max !== 50000000000) {
+                const liabilityValue = bkwireParseAssetValue(company.Liabilities);
+                matchesLiabilityRange = liabilityValue >= liabilityRange.min && liabilityValue <= liabilityRange.max;
+            }
+        }
+        
+        return matchesSearch && matchesState && matchesCity && matchesChapterType && matchesAssetRange && matchesLiabilityRange;
+    });
+    bkwireRenderTable();
+}
+
+// Clear all filters
+function bkwireClearFilters() {
+    bkwireSearchInput.value = '';
+    bkwireStateFilter.value = '';
+    bkwireCityFilter.value = '';
+    
+    // Clear chapter type checkboxes
+    document.querySelectorAll('.bkwire-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    // Reset sliders
+    bkwireResetSliders();
+    
+    bkwireFilteredData = [...bkwireCompaniesData];
+    bkwireRenderTable();
+}
+
+// Render the data table
+function bkwireRenderTable() {
+    const config = bkwireTableConfigs[bkwireCurrentTab];
+    bkwireTableBody.innerHTML = '';
+    // Render table header
+    const thead = bkwireTableBody.parentElement.querySelector('thead.bkwire-table-header tr');
+    thead.innerHTML = config.headers.map(h => `<th>${h}</th>`).join('');
+
+    if (bkwireFilteredData.length === 0) {
+        bkwireTableBody.innerHTML = `
+            <tr>
+                <td colspan="${config.headers.length}" style="text-align: center; padding: 40px; color: #5f6368;">
+                    No companies found matching your criteria
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    bkwireFilteredData.forEach(company => {
+        const row = document.createElement('tr');
+        row.className = 'bkwire-table-row';
+        row.innerHTML = config.fields.map(field => {
+            let val = company[field] !== undefined ? company[field] : '';
+            // Format Loss as currency for impacted
+            if (bkwireCurrentTab === 'impacted' && field === 'Loss') {
+                val = val ? ( val.toLocaleString()) : '';
+            }
+            
+            // Make company names clickable
+            if ((bkwireCurrentTab === 'corporate' && field === 'Corporate Bankruptcy') ||
+                (bkwireCurrentTab === 'impacted' && field === 'Impacted Business') ||
+                (bkwireCurrentTab === 'creditor' && field === 'Creditor Name')) {
+                return `<td><a href="#" class="bkwire-company-link" onclick="event.stopPropagation(); bkwireShowCompanyDetail('${bkwireCurrentTab}', ${JSON.stringify(company).replace(/"/g, '&quot;')})">${val}</a></td>`;
+            }
+            
+            return `<td>${val}</td>`;
+        }).join('');
+        
+        // Add click event to entire row
+        row.addEventListener('click', () => {
+            bkwireShowCompanyDetail(bkwireCurrentTab, company);
+        });
+        
+        bkwireTableBody.appendChild(row);
+    });
+}
+
+// Show company detail
+function bkwireShowCompanyDetail(tabType, company) {
+    // Hide header navigation when showing details
+    document.querySelector('.bkwire-header-nav').style.display = 'none';
+    
+    // Update company name and location
+    let companyName = '';
+    let companyAddress = '';
+    
+    if (tabType === 'corporate') {
+        companyName = company['Corporate Bankruptcy'];
+        companyAddress = `${company.City}, ${company.State}`;
+    } else if (tabType === 'impacted') {
+        companyName = company['Impacted Business'];
+        companyAddress = `${company.City}, ${company.State}`;
+    } else if (tabType === 'creditor') {
+        companyName = company['Creditor Name'];
+        companyAddress = 'See details';
+    }
+    
+    document.getElementById('bkwireCompanyName').textContent = companyName;
+    document.getElementById('bkwireCompanyAddress').textContent = companyAddress;
+    
+    // Update stats based on tab type
+    if (tabType === 'corporate') {
+        document.getElementById('bkwireAssetsValue').textContent = company.Assets || 'N/A';
+        document.getElementById('bkwireLiabilitiesValue').textContent = company.Liabilities || 'N/A';
+        document.getElementById('bkwireBusinessType').innerHTML = (company['BKwire Zone'] || 'N/A').replace(' ', '<br>');
+        document.getElementById('bkwireCourtName').innerHTML = 'Bankruptcy Court';
+        
+        // Update detail sections for corporate
+        document.getElementById('bkwireDetailSectionTitle').textContent = 'Bankruptcy Details';
+        document.getElementById('bkwireDetailInfoGrid').innerHTML = `
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Chapter Type</div>
+                <div class="bkwire-info-value">${company['Chapter Type'] || 'N/A'}</div>
+            </div>
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Case Number</div>
+                <div class="bkwire-info-value">${company['Case Number'] || 'N/A'}</div>
+            </div>
+        `;
+        
+        document.getElementById('bkwireAdditionalInfoGrid').innerHTML = `
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Creditors</div>
+                <div class="bkwire-info-value">${company['Creditors'] || 'N/A'}</div>
+            </div>
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Loss Amount</div>
+                <div class="bkwire-info-value">$${company.Loss ? company.Loss.toLocaleString() : 'N/A'}</div>
+            </div>
+        `;
+        
+    } else if (tabType === 'impacted') {
+        document.getElementById('bkwireAssetsValue').textContent =  company.Assets || 'N/A';
+        document.getElementById('bkwireLiabilitiesValue').textContent = company.Liabilities || 'N/A'
+        document.getElementById('bkwireBusinessType').innerHTML = (company['BKwire Zone'] || 'N/A').replace(' ', '<br>');
+        document.getElementById('bkwireCourtName').innerHTML = 'Impacted Business';
+       
+        // Update detail sections for impacted
+        document.getElementById('bkwireDetailSectionTitle').textContent = 'Impact Details';
+        document.getElementById('bkwireDetailInfoGrid').innerHTML = `
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Chapter Type</div>
+                <div class="bkwire-info-value">${company['Chapter Type'] || 'N/A'}</div>
+            </div>
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Case Number</div>
+                <div class="bkwire-info-value">${company['Case Number'] || 'N/A'}</div>
+            </div>
+        `;
+        
+        document.getElementById('bkwireAdditionalInfoGrid').innerHTML = `
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Creditors</div>
+                <div class="bkwire-info-value">${company['Creditors'] || 'N/A'}</div>
+            </div>
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Loss Amount</div>
+                <div class="bkwire-info-value">$${company.Loss ? company.Loss.toLocaleString() : 'N/A'}</div>
+            </div>
+        `;
+        
+    } else if (tabType === 'creditor') {
+        document.getElementById('bkwireAssetsValue').textContent =  company.Assets || 'N/A';
+        document.getElementById('bkwireLiabilitiesValue').textContent = company.Liabilities || 'N/A'
+        document.getElementById('bkwireBusinessType').innerHTML = (company['BKWire Zone'] || 'N/A').replace(' ', '<br>');
+        document.getElementById('bkwireCourtName').innerHTML = 'Creditor';
+        
+        // Update detail sections for creditor
+        document.getElementById('bkwireDetailSectionTitle').textContent = 'Creditor Details';
+        document.getElementById('bkwireDetailInfoGrid').innerHTML = `
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Chapter Type</div>
+                <div class="bkwire-info-value">${company['Chapter Type'] || 'N/A'}</div>
+            </div>
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Case Number</div>
+                <div class="bkwire-info-value">${company['Case Number'] || 'N/A'}</div>
+            </div>
+        `;
+        
+        document.getElementById('bkwireAdditionalInfoGrid').innerHTML = `
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Creditors</div>
+                <div class="bkwire-info-value">${company['Creditors'] || 'N/A'}</div>
+            </div>
+            <div class="bkwire-info-item">
+                <div class="bkwire-info-label">Loss Amount</div>
+                <div class="bkwire-info-value">$${company.Loss ? company.Loss.toLocaleString() : 'N/A'}</div>
+            </div>
+        `;
+    }
+    
+    bkwireListView.style.display = 'none';
+    bkwireDetailView.style.display = 'block';
+    bkwireDetailView.classList.add('bkwire-active');
+    
+    // Hide left sidebar on detail view
+    document.getElementById('bkwireLeftSidebar').style.display = 'none';
+}
+
+// Show list view
+function bkwireShowListView() {
+    // Show header navigation when returning to list
+    document.querySelector('.bkwire-header-nav').style.display = 'block';
+    
+    bkwireListView.style.display = 'block';
+    bkwireDetailView.style.display = 'none';
+    bkwireDetailView.classList.remove('bkwire-active');
+    
+    // Show left sidebar on list view for all tabs
+    const sidebar = document.getElementById('bkwireLeftSidebar');
+    sidebar.style.display = 'block';
+}
+
+
+
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', bkwireInit);
+</script>
